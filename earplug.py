@@ -48,3 +48,22 @@ plt.annotate("overall %0.1f dB"%(overall), (5,-45))
 plt.title("transmission of a lossless ear-plug (1D model)")
 plt.savefig("./img/lossless-1d-%dmm.png"%(thickness*1e3), dpi=300)
 
+# lossly case
+alpha = 30 * (f/1e6)**1.4 #(see Ba et al 2017)
+plt.figure()
+rrcos = 2*r1*r2*np.cos(2*d1)*np.exp(alpha*thickness)
+Rs = (r1**2 + rrcos + r2**2)/(1 + rrcos + (r1**2)*(r2**2))
+
+logRs = 10*np.log10(Rs)
+
+plt.plot(f/1e3,logRs)
+plt.xlim([0,40])
+plt.ylim([-50, 1])
+plt.xlabel("freq (kHz)")
+plt.ylabel("intensity (dB)")
+
+overall = 10*np.log10(np.sum(Rs)/len(Rs))
+plt.annotate("overall %0.1f dB"%(overall), (5,-45))
+
+plt.title("transmission of a lossy ear-plug (1D model)")
+plt.savefig("./img/lossy-1d-%dmm.png"%(thickness*1e3), dpi=300)
